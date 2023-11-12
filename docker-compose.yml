@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  
+  django-rest-api:
+    container_name: 'django-rest-api'
+    build:
+      context: ./BE
+      dockerfile: Dockerfile
+    volumes:
+      - ./BE:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DJANGO_DB_HOST=db
+      - DJANGO_DB_PORT=5432
+      - DJANGO_DB_NAME=template1
+      - DJANGO_DB_USER=postgres
+      - DJANGO_DB_PASSWORD=
+      # - DJANGO_SETTINGS_MODULE=articles.settings
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=template1
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+
+  # frontend:
+  #   image: node:14
+  #   command: bash -c "npm install && npm start"
+  #   volumes:
+  #     - ./FE:/app
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - django-rest-api
+  #   environment:
+  #     - DJANGO_API_URL=http://web:8000
+
+  nginx:
+    container_name: 'nginx'
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - frontend

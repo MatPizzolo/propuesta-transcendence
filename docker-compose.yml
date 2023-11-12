@@ -47,5 +47,5 @@ services:
       dockerfile: nginx/Dockerfile
     ports:
       - "3000:3000"
-    depends_on:
-      - frontend
+    # depends_on:
+    #   - frontend

@@ -8,15 +8,22 @@ ENV PYTHONUNBUFFERED 1
 # Set the working directory within the container to /app/
 WORKDIR /app/
 
+# Install virtualenv
+RUN pip install --upgrade pip && pip install virtualenv
+
+# Create a virtual environment and activate it
+RUN python -m venv /venv
+ENV PATH="/venv/bin:$PATH"
+RUN /venv/bin/pip install --upgrade pip
+
 # Copy the requirements.txt file to /app/
 COPY requirements.txt /app/
 
-# Upgrade pip and install project dependencies
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+# Install project dependencies within the virtual environment
+RUN /venv/bin/pip install --no-cache-dir -r requirements.txt
 
 # Copy the entire project to /app/
 COPY . /app/
 
 # Run migrations and start the Django development server
-CMD ["sh", "-c", "python ./BE/DjangoAPI/manage.py makemigrations && python ./BE/DjangoAPI/manage.py migrate && python ./BE/DjangoAPI/manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "/venv/bin/python ./BE/DjangoAPI/manage.py makemigrations && /venv/bin/python ./BE/DjangoAPI/manage.py migrate && /venv/bin/python ./BE/DjangoAPI/manage.py runserver 0.0.0.0:8000"]

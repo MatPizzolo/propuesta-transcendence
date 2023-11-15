@@ -1,19 +1,18 @@
-# Use the official Nginx image as a base image
 FROM nginx:alpine
 
-# Copy Nginx configuration
-COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
-
-# Remove the default Nginx index.html
-RUN rm -rf /usr/share/nginx/html/*
+# Remove the default Nginx configuration
+RUN rm /etc/nginx/conf.d/default.conf
 
 # Set the working directory
 WORKDIR /usr/share/nginx/html
 
 # Copy the frontend files into the container
-COPY FE /usr/share/nginx/html
+COPY Front /usr/share/nginx/html
 
-# Expose port 80
+# Copy the custom Nginx configuration
+COPY nginx/default.conf /etc/nginx/conf.d/
+
+# Expose port 3000
 EXPOSE 3000
 
 # Command to start Nginx

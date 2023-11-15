@@ -3,7 +3,7 @@ FROM python:3.7-alpine AS builder
 EXPOSE 8000
 WORKDIR /app
 
-RUN apk add --no-cache bash  # Install bash (if not already installed)
+RUN apk add --no-cache bash
 
 RUN pip install --upgrade pip
 RUN pip install django

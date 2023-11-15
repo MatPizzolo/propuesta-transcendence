@@ -5,10 +5,10 @@ services:
   django-rest-api:
     container_name: 'django-rest-api'
     build:
-      context: ./BE
+      context: ./Back
       dockerfile: Dockerfile
     volumes:
-      - ./BE:/app
+      - ./Back:/app
     ports:
       - "8000:8000"
     depends_on:
@@ -28,18 +28,6 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
 
-  # frontend:
-  #   image: node:14
-  #   command: bash -c "npm install && npm start"
-  #   volumes:
-  #     - ./FE:/app
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - django-rest-api
-  #   environment:
-  #     - DJANGO_API_URL=http://web:8000
-
   nginx:
     container_name: 'nginx'
     build:
@@ -47,5 +35,5 @@ services:
       dockerfile: nginx/Dockerfile
     ports:
       - "3000:3000"
-    # depends_on:
-    #   - frontend
+    volumes:
+      - ./Front:/usr/share/nginx/html

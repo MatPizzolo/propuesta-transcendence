@@ -46,6 +46,19 @@ services:
     networks:
       - app-network
 
+  nginx:
+    container_name: 'nginx'
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    volumes:
+      - ./Front:/usr/share/nginx/html
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+
 # Store data persistently in named volumes
 volumes:
   postgres_data:

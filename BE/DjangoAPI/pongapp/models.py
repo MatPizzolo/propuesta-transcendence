@@ -1,6 +1,5 @@
 from django.db import models
 
-
 # Create your models here.
 class Tournament(models.Model):
     TournamentID = models.AutoField(primary_key=True)
